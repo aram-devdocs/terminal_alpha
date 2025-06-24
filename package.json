@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.54.0",
+    "chalk": "^4.1.2",
     "dotenv": "^16.5.0",
     "gpt-tokenizer": "^3.0.1"
   }

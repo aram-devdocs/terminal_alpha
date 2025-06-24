@@ -4,6 +4,9 @@ import { Writable } from "stream";
 export interface TerminalIO {
   write(text: string): void;
   writeRaw(text: string): void;
+  writeStream(text: string): void;
+  startLoading(message?: string): () => void;
+  clear(): void;
   exit(): void;
 }
 
@@ -15,6 +18,7 @@ export interface Application {
 export class Terminal {
   private rl: readline.Interface;
   private io: TerminalIO;
+  private loadingInterval: NodeJS.Timeout | null = null;
 
   constructor(private app: Application) {
     // Create a muted output stream that only shows the prompt
@@ -36,6 +40,34 @@ export class Terminal {
     this.io = {
       write: (text: string) => console.log(text),
       writeRaw: (text: string) => process.stdout.write(text),
+      writeStream: (text: string) => {
+        process.stdout.write(text);
+      },
+      startLoading: (message?: string) => {
+        const frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+        let i = 0;
+        
+        if (this.loadingInterval) {
+          clearInterval(this.loadingInterval);
+        }
+        
+        this.loadingInterval = setInterval(() => {
+          readline.clearLine(process.stdout, 0);
+          readline.cursorTo(process.stdout, 0);
+          process.stdout.write(`${frames[i]} ${message || 'Loading...'}`);
+          i = (i + 1) % frames.length;
+        }, 80);
+        
+        return () => {
+          if (this.loadingInterval) {
+            clearInterval(this.loadingInterval);
+            this.loadingInterval = null;
+            readline.clearLine(process.stdout, 0);
+            readline.cursorTo(process.stdout, 0);
+          }
+        };
+      },
+      clear: () => console.clear(),
       exit: () => this.stop()
     };
   }
