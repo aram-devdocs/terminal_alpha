@@ -1,7 +1,7 @@
-import { Terminal } from './terminal';
-import { ClaudeAgent } from './claude-agent';
+import { Terminal } from './core/terminal';
+import { ClaudeAgent } from './core/agent';
 
-async function main() {
+async function main(): Promise<void> {
   try {
     const agent = new ClaudeAgent();
     const terminal = new Terminal(agent);
@@ -12,4 +12,4 @@ async function main() {
   }
 }
 
-main();
+void main();

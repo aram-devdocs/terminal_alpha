@@ -1,3 +1,4 @@
 node_modules
 .env
 github-repo-debug.json
+dist

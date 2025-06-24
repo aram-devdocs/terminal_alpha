@@ -1,5 +1,5 @@
-import readline from "readline";
-import { Writable } from "stream";
+import readline from 'readline';
+import { Writable } from 'stream';
 
 export interface TerminalIO {
   write(text: string): void;
@@ -28,15 +28,15 @@ export class Terminal {
           process.stdout.write(chunk, encoding);
         }
         callback();
-      }
+      },
     });
 
     this.rl = readline.createInterface({
       input: process.stdin,
       output: mutableStdout,
-      prompt: '> '
+      prompt: '> ',
     });
-    
+
     this.io = {
       write: (text: string) => console.log(text),
       writeRaw: (text: string) => process.stdout.write(text),
@@ -46,18 +46,18 @@ export class Terminal {
       startLoading: (message?: string) => {
         const frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
         let i = 0;
-        
+
         if (this.loadingInterval) {
           clearInterval(this.loadingInterval);
         }
-        
+
         this.loadingInterval = setInterval(() => {
           readline.clearLine(process.stdout, 0);
           readline.cursorTo(process.stdout, 0);
           process.stdout.write(`${frames[i]} ${message || 'Loading...'}`);
           i = (i + 1) % frames.length;
         }, 80);
-        
+
         return () => {
           if (this.loadingInterval) {
             clearInterval(this.loadingInterval);
@@ -68,23 +68,23 @@ export class Terminal {
         };
       },
       clear: () => console.clear(),
-      exit: () => this.stop()
+      exit: () => this.stop(),
     };
   }
 
   async start(): Promise<void> {
     await this.app.onStart(this.io);
-    
+
     this.rl.on('line', async (input: string) => {
       await this.app.onInput(input, this.io);
       this.rl.prompt();
     });
-    
+
     this.rl.on('SIGINT', () => this.stop());
-    
+
     this.rl.prompt();
   }
-  
+
   private stop(): void {
     this.rl.close();
     process.exit(0);

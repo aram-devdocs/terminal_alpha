@@ -23,7 +23,7 @@ export class ConversationManager {
       title: title || `Chat ${new Date().toLocaleString()}`,
       messages: [],
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
     this.conversations.set(id, conversation);
     this.currentConversationId = id;
@@ -48,8 +48,9 @@ export class ConversationManager {
   }
 
   getAllConversations(): Conversation[] {
-    return Array.from(this.conversations.values())
-      .sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
+    return Array.from(this.conversations.values()).sort(
+      (a, b) => b.updatedAt.getTime() - a.updatedAt.getTime()
+    );
   }
 
   deleteConversation(id: string): boolean {
@@ -66,7 +67,7 @@ export class ConversationManager {
     conversation.messages.push({
       role,
       content,
-      timestamp: new Date()
+      timestamp: new Date(),
     });
     conversation.updatedAt = new Date();
   }
@@ -74,7 +75,7 @@ export class ConversationManager {
   clearCurrentConversation(): void {
     const conversation = this.getCurrentConversation();
     if (!conversation) return;
-    
+
     conversation.messages = [];
     conversation.updatedAt = new Date();
   }

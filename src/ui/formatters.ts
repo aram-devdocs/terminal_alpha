@@ -4,26 +4,26 @@ import chalk from 'chalk';
 function simpleMarkdownFormat(text: string): string {
   // Bold text
   text = text.replace(/\*\*(.*?)\*\*/g, (_, p1) => chalk.bold(p1));
-  
+
   // Italic text
   text = text.replace(/\*(.*?)\*/g, (_, p1) => chalk.italic(p1));
-  
+
   // Code blocks
   text = text.replace(/```([\s\S]*?)```/g, (_, p1) => chalk.yellow(p1.trim()));
-  
+
   // Inline code
   text = text.replace(/`([^`]+)`/g, (_, p1) => chalk.yellow(p1));
-  
+
   // Headers
-  text = text.replace(/^(#{1,6})\s+(.+)$/gm, (_, hashes, content) => {
+  text = text.replace(/^(#{1,6})\s+(.+)$/gm, (_, _hashes, content) => {
     return chalk.green.bold(content);
   });
-  
+
   // Links
-  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => {
+  text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, _url) => {
     return chalk.blue.underline(text);
   });
-  
+
   return text;
 }
 
