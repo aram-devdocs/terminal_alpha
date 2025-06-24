@@ -1,0 +1,30 @@
+{
+  "name": "terminal_alpha",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "nodemon --watch src --ext ts --exec ts-node src/main.ts",
+    "dev:compiled": "nodemon --watch src --ext ts --exec \"tsc && node dist/index.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^24.0.4",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
+    "@typescript-eslint/parser": "^8.35.0",
+    "eslint": "^9.29.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.54.0",
+    "dotenv": "^16.5.0",
+    "gpt-tokenizer": "^3.0.1"
+  }
+}
